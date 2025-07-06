@@ -5,7 +5,21 @@ let inptH2 = document.querySelector("h2")
 let inputDiv = document.querySelector(".input")
 let emptyDiv = document.querySelector(".empty")
 let outerInput = document.querySelector(".outerinput")
- 
+let mainbox = document.querySelector(".mainbox")
+let toggleBtn = document.querySelector("#darkMode");
+
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    // Toggle button text
+   if (document.body.classList.contains("dark-mode")) {
+        toggleBtn.textContent = "☀️ Light Mode";
+        mainbox.style.background = "linear-gradient(to right,rgb(121, 125, 255),rgb(174, 121, 254), rgb(121, 125, 255)";
+    } else {
+        toggleBtn.textContent = "🌙 Dark Mode";
+        mainbox.style.background = "linear-gradient(to right, #ccceff, #e8dbfb, #ccceff)";
+    }
+});
+
 let quotes = [
     "“Believe in yourself and all that you are.”",
     "“You are capable of amazing things.”",
@@ -38,21 +52,21 @@ let quotes = [
 ]
 
 function capitalizeWords(str) {
-  return str.split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
+    return str.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 }
 let length = quotes.length
-// console.log(quote)
-btn.addEventListener("click",() => {
-    let quote = parseInt(Math.random()*length)
+
+btn.addEventListener("click", () => {
+    let quote = Math.floor(Math.random() * length);
     let inptVal = capitalizeWords(input.value);
-    if(inptVal == "" && btn.textContent == "Generate Quote"){
+    if (inptVal == "" && btn.textContent == "Generate Quote") {
         // if(inputDiv.style.visibility == "visible"){
-            emptyDiv.textContent = "Enter your name first... "
-            emptyDiv.style.visibility = "visible"
+        emptyDiv.textContent = "Enter your name first... "
+        emptyDiv.style.visibility = "visible"
         return
-    }else{
+    } else {
         console.log("btn is clicked!")
         console.log(inptVal)
         input.value = ""
@@ -62,9 +76,11 @@ btn.addEventListener("click",() => {
         outerInput.style.height = "4.25rem"
         outerInput.style.padding = "15px"
         outerInput.textContent = `${quotes[quote]}`
-        if(inptVal == ""){
+        let utterance = new SpeechSynthesisUtterance(quotes[quote]);
+        speechSynthesis.speak(utterance);
+        if (inptVal == "") {
             return
-        }else{
+        } else {
             inptH2.textContent = `Welcome, ${inptVal} 💜`;
         }
     }
